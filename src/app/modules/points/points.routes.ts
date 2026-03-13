@@ -7,4 +7,4 @@ router.post("/send", PointsController.createTransaction); // send points
 router.get("/transactions/:email", PointsController.getUserTransactions); // history
 router.get("/balance/:email", PointsController.getUserBalance); // current points
 
-export default router;
+export const pointsRoutes = router;
