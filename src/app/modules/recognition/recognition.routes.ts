@@ -16,4 +16,6 @@ router.post(
   RecognitionControllers.sendRecognition
 )
 
+router.get("/history", checkAuth("SUPER_ADMIN", "ADMIN", "USER"), RecognitionControllers.getHistory)
+
 export const RecognitionRoutes = router

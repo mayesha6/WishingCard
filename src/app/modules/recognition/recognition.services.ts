@@ -2,6 +2,7 @@ import httpStatus from "http-status-codes"
 import { Recognition } from "./recognition.model"
 import { User } from "../user/user.model"
 import AppError from "../../errorHelpers/AppError"
+import { QueryBuilder } from "../../utils/QueryBuiler"
 
 const sendRecognition = async (senderEmail: string, payload: any) => {
 
@@ -53,6 +54,35 @@ const sendRecognition = async (senderEmail: string, payload: any) => {
   return recognition
 }
 
+const getRecognitionHistory = async (
+  email: string,
+  query: Record<string, string>
+) => {
+
+  const baseQuery = Recognition.find({
+    $or: [
+      { senderEmail: email },
+      { receiverEmail: email }
+    ]
+  });
+
+  const queryBuilder = new QueryBuilder(baseQuery, query)
+    .search(["senderEmail", "receiverEmail", "category", "message"])
+    .filter()
+    .sort()
+    .fields()
+    .paginate();
+
+  const result = await queryBuilder.build();
+  const meta = await queryBuilder.getMeta();
+
+  return {
+    meta,
+    result
+  };
+};
+
 export const RecognitionServices = {
-  sendRecognition
+  sendRecognition,
+  getRecognitionHistory
 }

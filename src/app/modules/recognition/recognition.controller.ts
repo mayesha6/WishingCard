@@ -23,6 +23,26 @@ const sendRecognition = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const getHistory = catchAsync(async (req: Request, res: Response) => {
+
+  const user = req.user as JwtPayload;
+  const email = user.email;
+
+  const { meta, result } = await RecognitionServices.getRecognitionHistory(
+    email,
+    req.query as Record<string, string>
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Recognition history retrieved",
+    meta,
+    data: result
+  });
+});
+
 export const RecognitionControllers = {
-  sendRecognition
+  sendRecognition,
+  getHistory
 }
