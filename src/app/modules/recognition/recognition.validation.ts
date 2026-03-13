@@ -1,8 +1,7 @@
 import { z } from "zod"
 
 const sendRecognitionValidation = z.object({
-  body: z.object({
-    receiverEmail: z.string().email(),
+  receiverEmail: z.string().email(),
 
     category: z.string({
       message: "Category is required"
@@ -21,7 +20,6 @@ const sendRecognitionValidation = z.object({
     message: z.string({
       message: "Message is required"
     })
-  })
 })
 
 export const RecognitionValidation = {

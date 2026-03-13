@@ -3,6 +3,7 @@ import { Recognition } from "./recognition.model"
 import { User } from "../user/user.model"
 import AppError from "../../errorHelpers/AppError"
 import { QueryBuilder } from "../../utils/QueryBuiler"
+import { PointsTransaction } from "../points/points.model"
 
 const sendRecognition = async (senderEmail: string, payload: any) => {
 
@@ -49,6 +50,13 @@ const sendRecognition = async (senderEmail: string, payload: any) => {
     points,
     message,
     status: "SENT"
+  })
+
+  await PointsTransaction.create({
+    senderEmail,
+    receiverEmail,
+    points,
+    type: "RECOGNITION"
   })
 
   return recognition
